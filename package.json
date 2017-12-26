@@ -8,7 +8,7 @@
   "scripts": {
     "test": "(cd spec/reference-implementation ; npm install && npm run test && node ../../generate-bundle-tests.js && node --expose_gc run-web-platform-tests-on-bundle.js ; rm ./run-web-platform-tests-on-bundle.js)",
     "bundle": "npm-run-all bundle:*",
-    "bundle:no-min": "browserify index.es6.js -d -s default -t [ babelify ] | derequire | exorcist ./dist/polyfill.js.map > ./dist/polyfill.js",
+    "bundle:no-min": "rollup -c",
     "bundle:min": "node browserify-uglifyify.js | derequire | exorcist ./dist/polyfill.min.js.map > ./dist/polyfill.min.js",
     "bundle:min-ie11": "node browserify-uglifyify.js ie11 | derequire | exorcist ./dist/polyfill-ie11.min.js.map > ./dist/polyfill-ie11.min.js",
     "build": "npm run bundle",
@@ -46,6 +46,9 @@
     "derequire": "^2.0.3",
     "exorcist": "^0.4.0",
     "npm-run-all": "^2.3.0",
+    "rollup": "^0.53.0",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0",
     "uglifyify": "^4.0.4",
     "yarn": "^0.17.0"
   },
