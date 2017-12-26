@@ -1,9 +1,8 @@
-export const
-  { ReadableStream } = require('./src/readable-stream'),
-  { WritableStream } = require('./src/writable-stream'),
-  ByteLengthQueuingStrategy = require('./src/byte-length-queuing-strategy'),
-  CountQueuingStrategy = require('./src/count-queuing-strategy'),
-  { TransformStream } = require('./src/transform-stream');
+import { ReadableStream } from './src/readable-stream';
+import { WritableStream } from './src/writable-stream';
+import ByteLengthQueuingStrategy from './src/byte-length-queuing-strategy';
+import CountQueuingStrategy from './src/count-queuing-strategy';
+import { TransformStream } from './src/transform-stream';
 
 const interfaces = {
   ReadableStream,
@@ -15,6 +14,13 @@ const interfaces = {
 
 // Export
 export default interfaces;
+export {
+  ReadableStream,
+  WritableStream,
+  ByteLengthQueuingStrategy,
+  CountQueuingStrategy,
+  TransformStream
+}
 
 // Add classes to window
 if ( typeof window !== "undefined" )
