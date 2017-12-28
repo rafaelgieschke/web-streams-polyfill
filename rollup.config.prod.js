@@ -13,7 +13,12 @@ export default {
     ...rollupConfig.plugins,
     babel(),
     strip({
-      functions: ['assert']
+      include: 'src/**',
+      functions: [
+        'assert',
+        'debug',
+        'verbose'
+      ]
     }),
     uglify()
   ]
