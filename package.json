@@ -6,10 +6,14 @@
   "browser": "dist/polyfill.min.js",
   "jsnext:main": "index.es6.js",
   "scripts": {
-    "test": "(cd spec/reference-implementation ; npm install && npm run test && cp ../../run-web-platform-tests-on-bundle.js ./ && node --expose_gc run-web-platform-tests-on-bundle.js && rm ./run-web-platform-tests-on-bundle.js)",
+    "test": "npm run lint && npm run wpt",
     "bundle": "npm-run-all bundle:*",
     "bundle:no-min": "browserify index.es6.js -d -s default -t [ babelify ] | derequire | exorcist ./dist/polyfill.js.map > ./dist/polyfill.js",
     "bundle:min": "browserify -g uglifyify index.es6.js -d -s default -t [ babelify --plugins babel-plugin-unassert uglifyify ] | derequire | exorcist ./dist/polyfill.min.js.map > ./dist/polyfill.min.js",
+    "wpt": "node --expose_gc run-web-platform-tests-on-bundle.js",
+    "sync-wpt": "git submodule update --init",
+    "lint": "eslint \"**/*.js\"",
+    "coverage": "nyc --reporter=lcov npm test && opener coverage/lcov-report/index.html",
     "build": "npm run bundle",
     "prebuild": "git submodule update --init",
     "prepublish": "npm run build"
@@ -41,10 +45,18 @@
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
     "derequire": "^2.0.3",
+    "eslint": "^3.2.2",
     "exorcist": "^0.4.0",
+    "minimatch": "^3.0.4",
     "npm-run-all": "^2.3.0",
+    "nyc": "^11.2.1",
+    "opener": "^1.4.2",
     "uglifyify": "^3.0.2",
+    "wpt-runner": "^2.2.0",
     "yarn": "^0.17.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "better-assert": "^1.0.2",
+    "debug": "^3.1.0"
+  }
 }
