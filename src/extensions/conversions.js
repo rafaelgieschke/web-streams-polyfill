@@ -10,6 +10,7 @@ export class WrappingReadableStreamDefaultSource {
   }
 
   pull() {
+    // TODO Backpressure?
     return this._underlyingReader.read()
       .then(({ value, done }) => {
         const controller = this._readableStreamController;
@@ -42,6 +43,7 @@ export class WrappingReadableByteStreamSource extends WrappingReadableStreamDefa
   }
 
   _pullIntoByobRequest(byobRequest) {
+    // TODO Backpressure?
     return this._underlyingReader.read(byobRequest.view)
       .then(({ value, done }) => {
         const controller = this._readableStreamController;
@@ -56,6 +58,43 @@ export class WrappingReadableByteStreamSource extends WrappingReadableStreamDefa
           byobRequest.respondWithNewView(value);
         }
       });
+  }
+
+}
+
+export class WrappingWritableStreamSink {
+
+  constructor(underlyingWriter) {
+    this._underlyingWriter = underlyingWriter;
+    this._writableStreamController = undefined;
+  }
+
+  start(controller) {
+    this._writableStreamController = controller;
+  }
+
+  write(chunk) {
+    const writer = this._underlyingWriter;
+
+    writer.write(chunk)
+      .catch(reason => {
+        const controller = this._writableStreamController;
+        controller.error(reason);
+      });
+
+    // Apply backpressure
+    if (writer.desiredSize <= 0) {
+      return writer.ready;
+    }
+    return undefined;
+  }
+
+  close() {
+    return this._underlyingWriter.close();
+  }
+
+  abort(reason) {
+    return this._underlyingWriter.abort(reason);
   }
 
 }
