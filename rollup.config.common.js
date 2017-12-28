@@ -1,5 +1,5 @@
 export default {
-  input: 'index.es6.js',
+  input: 'src/index.js',
   output: {
     format: 'umd',
     name: 'default',
