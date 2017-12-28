@@ -8,8 +8,7 @@ import { AcquireWritableStreamDefaultWriter, IsWritableStream, IsWritableStreamL
         WritableStreamAbort, WritableStreamDefaultWriterCloseWithErrorPropagation,
         WritableStreamDefaultWriterRelease, WritableStreamDefaultWriterWrite, WritableStreamCloseQueuedOrInFlight }
       from './writable-stream.js';
-import { WrappingReadableByteStreamSource, WrappingReadableStreamDefaultSource } from './extensions/conversions';
-import { GetBYOBOrDefaultReader } from './extensions/utils';
+import { CreateWrappingReadableSource } from './extensions/conversions';
 
 const CancelSteps = Symbol('[[CancelSteps]]');
 const PullSteps = Symbol('[[PullSteps]]');
@@ -270,15 +269,7 @@ class ReadableStream {
   // Extensions
 
   static fromNative(readable, { size, highWaterMark } = {}) {
-    const { reader, mode } = GetBYOBOrDefaultReader(readable);
-
-    let source;
-    if (mode === 'bytes') {
-      source = new WrappingReadableByteStreamSource(reader);
-    } else {
-      source = new WrappingReadableStreamDefaultSource(reader);
-    }
-
+    const source = CreateWrappingReadableSource(readable);
     return new ReadableStream(source, { size, highWaterMark });
   }
 

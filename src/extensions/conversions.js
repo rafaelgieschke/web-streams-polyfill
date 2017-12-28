@@ -1,4 +1,24 @@
-export class WrappingReadableStreamDefaultSource {
+import { GetBYOBOrDefaultReader } from './utils';
+
+export function CreateWrappingReadableSource(readable) {
+  const { reader, mode } = GetBYOBOrDefaultReader(readable);
+
+  let source;
+  if (mode === 'bytes') {
+    source = new WrappingReadableByteStreamSource(reader);
+  } else {
+    source = new WrappingReadableStreamDefaultSource(reader);
+  }
+
+  return source;
+}
+
+export function CreateWrappingWritableSink(writable) {
+  const writer = writable.getWriter();
+  return new WrappingWritableStreamSink(writer);
+}
+
+class WrappingReadableStreamDefaultSource {
 
   constructor(underlyingReader) {
     this._underlyingReader = underlyingReader;
@@ -28,7 +48,7 @@ export class WrappingReadableStreamDefaultSource {
 
 }
 
-export class WrappingReadableByteStreamSource extends WrappingReadableStreamDefaultSource {
+class WrappingReadableByteStreamSource extends WrappingReadableStreamDefaultSource {
 
   get type() {
     return 'bytes';
@@ -62,7 +82,7 @@ export class WrappingReadableByteStreamSource extends WrappingReadableStreamDefa
 
 }
 
-export class WrappingWritableStreamSink {
+class WrappingWritableStreamSink {
 
   constructor(underlyingWriter) {
     this._underlyingWriter = underlyingWriter;

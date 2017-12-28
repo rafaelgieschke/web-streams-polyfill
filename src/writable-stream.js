@@ -9,7 +9,7 @@ import { CreateAlgorithmFromUnderlyingMethod, InvokeOrNoop, ValidateAndNormalize
         MakeSizeAlgorithmFromSizeFunction, typeIsObject } from './helpers.js';
 import { rethrowAssertionErrorRejection } from './utils.js';
 import { DequeueValue, EnqueueValueWithSize, PeekQueueValue, ResetQueue } from './queue-with-sizes.js';
-import { WrappingWritableStreamSink } from './extensions/conversions';
+import { CreateWrappingWritableSink } from './extensions/conversions';
 
 const AbortSteps = Symbol('[[AbortSteps]]');
 const ErrorSteps = Symbol('[[ErrorSteps]]');
@@ -61,8 +61,7 @@ class WritableStream {
   // Extensions
 
   static fromNative(writable, { size, highWaterMark } = {}) {
-    const writer = writable.getWriter();
-    const sink = new WrappingWritableStreamSink(writer);
+    const sink = CreateWrappingWritableSink(writable);
     return new WritableStream(sink, { size, highWaterMark });
   }
 
