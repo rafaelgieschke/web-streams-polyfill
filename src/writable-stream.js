@@ -10,6 +10,7 @@ import { CreateAlgorithmFromUnderlyingMethod, InvokeOrNoop, ValidateAndNormalize
 import { rethrowAssertionErrorRejection } from './utils.js';
 import { DequeueValue, EnqueueValueWithSize, PeekQueueValue, ResetQueue } from './queue-with-sizes.js';
 import { CreateWrappingWritableSink } from './extensions/conversions';
+import { IsWritableStreamConstructor, NativeWritableStream } from './extensions/native';
 
 const AbortSteps = Symbol('[[AbortSteps]]');
 const ErrorSteps = Symbol('[[ErrorSteps]]');
@@ -63,6 +64,15 @@ class WritableStream {
   static fromNative(writable, { size, highWaterMark } = {}) {
     const sink = CreateWrappingWritableSink(writable);
     return new WritableStream(sink, { size, highWaterMark });
+  }
+
+  static toNative(writable, { size, highWaterMark } = {}) {
+    if (!IsWritableStreamConstructor(NativeWritableStream)) {
+      throw new TypeError('Missing native support for writable streams');
+    }
+
+    const sink = CreateWrappingWritableSink(writable);
+    return new NativeWritableStream(sink, { size, highWaterMark });
   }
 
 }

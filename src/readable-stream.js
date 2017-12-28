@@ -9,6 +9,7 @@ import { AcquireWritableStreamDefaultWriter, IsWritableStream, IsWritableStreamL
         WritableStreamDefaultWriterRelease, WritableStreamDefaultWriterWrite, WritableStreamCloseQueuedOrInFlight }
       from './writable-stream.js';
 import { CreateWrappingReadableSource } from './extensions/conversions';
+import { IsReadableStreamConstructor, NativeReadableStream } from './extensions/native';
 
 const CancelSteps = Symbol('[[CancelSteps]]');
 const PullSteps = Symbol('[[PullSteps]]');
@@ -271,6 +272,15 @@ class ReadableStream {
   static fromNative(readable, { size, highWaterMark } = {}) {
     const source = CreateWrappingReadableSource(readable);
     return new ReadableStream(source, { size, highWaterMark });
+  }
+
+  static toNative(readable, { size, highWaterMark } = {}) {
+    if (!IsReadableStreamConstructor(NativeReadableStream)) {
+      throw new TypeError('Missing native support for readable streams');
+    }
+
+    const source = CreateWrappingReadableSource(readable);
+    return new NativeReadableStream(source, { size, highWaterMark });
   }
 
 }
