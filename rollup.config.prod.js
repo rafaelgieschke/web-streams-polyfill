@@ -11,7 +11,9 @@ export default {
   },
   plugins: [
     ...rollupConfig.plugins,
-    babel(),
+    babel({
+      include: 'src/**'
+    }),
     strip({
       include: 'src/**',
       functions: [

@@ -27,6 +27,7 @@ export default {
   plugins: [
     ...rollupConfig.plugins,
     babel({
+      include: 'src/**',
       babelrc: false,
       ...babelConfig
     })
