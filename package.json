@@ -38,11 +38,9 @@
   },
   "homepage": "https://github.com/creatorrr/web-streams-polyfill#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-plugin-external-helpers": "^6.22.0",
-    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-register": "^6.26.0",
     "eslint": "^3.2.2",
     "minimatch": "^3.0.4",
     "npm-run-all": "^2.3.0",
