@@ -1,4 +1,4 @@
-import assert from 'better-assert';
+import assert from './assert.js';
 
 const isFakeDetached = Symbol('is "detached" for our purposes');
 

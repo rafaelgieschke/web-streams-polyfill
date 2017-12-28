@@ -1,4 +1,4 @@
-import assert from 'better-assert';
+import assert from './assert.js';
 import { ArrayBufferCopy, CreateAlgorithmFromUnderlyingMethod, CreateIterResultObject, IsFiniteNonNegativeNumber,
         InvokeOrNoop, IsDetachedBuffer, TransferArrayBuffer, ValidateAndNormalizeHighWaterMark, IsNonNegativeNumber,
         MakeSizeAlgorithmFromSizeFunction, createArrayFromList, typeIsObject } from './helpers.js';

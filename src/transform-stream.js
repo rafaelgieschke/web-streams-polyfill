@@ -1,5 +1,5 @@
-import assert from 'better-assert';
-import debug from 'debug';
+import assert from './assert.js';
+import debug from './debug.js';
 
 // Calls to verbose() are purely for debugging the reference implementation and tests. They are not part of the standard
 // and do not appear in the standard text.
