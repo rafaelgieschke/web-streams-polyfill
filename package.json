@@ -13,7 +13,7 @@
     "bundle:min": "rollup -c rollup.config.prod.js",
     "wpt": "node --expose_gc run-web-platform-tests-on-bundle.js",
     "sync-wpt": "git submodule update --init",
-    "lint": "eslint \"**/*.js\"",
+    "lint": "eslint \"src/**/*.js\"",
     "coverage": "nyc --reporter=lcov npm test && opener coverage/lcov-report/index.html",
     "build": "npm run bundle",
     "prebuild": "git submodule update --init",
