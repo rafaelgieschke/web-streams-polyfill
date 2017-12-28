@@ -1,3 +1,5 @@
+/* global window */
+
 import { ReadableStream } from './readable-stream';
 import { WritableStream } from './writable-stream';
 import ByteLengthQueuingStrategy from './byte-length-queuing-strategy';
@@ -20,8 +22,9 @@ export {
   ByteLengthQueuingStrategy,
   CountQueuingStrategy,
   TransformStream
-}
+};
 
 // Add classes to window
-if ( typeof window !== "undefined" )
-  Object.assign( window, interfaces );
+if (typeof window !== 'undefined') {
+  Object.assign(window, interfaces);
+}

@@ -8,4 +8,4 @@ export default class CountQueuingStrategy {
   size() {
     return 1;
   }
-};
+}

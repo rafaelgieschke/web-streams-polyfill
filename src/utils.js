@@ -1,4 +1,4 @@
-import {AssertionError} from './assert.js';
+import { AssertionError } from './assert.js';
 
 export const rethrowAssertionErrorRejection = e => {
   // Used throughout the reference implementation, as `.catch(rethrowAssertionErrorRejection)`, to ensure any errors
