@@ -1,11 +1,4 @@
-export default {
-  input: 'index.es6.js',
-  output: {
-    file: 'dist/polyfill.js',
-    format: 'umd',
-    name: 'default',
-    exports: 'named',
-    sourcemap: true
-  },
-  plugins: []
-};
+import configDev from './rollup.config.dev.js';
+import configProd from './rollup.config.prod.js';
+
+export default [configDev, configProd];

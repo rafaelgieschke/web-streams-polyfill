@@ -1,7 +1,7 @@
 import babel from 'rollup-plugin-babel';
 import strip from 'rollup-plugin-strip';
 import uglify from 'rollup-plugin-uglify';
-import rollupConfig from './rollup.config';
+import rollupConfig from './rollup.config.common.js';
 
 export default {
   ...rollupConfig,

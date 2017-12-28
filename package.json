@@ -7,8 +7,8 @@
   "jsnext:main": "index.es6.js",
   "scripts": {
     "test": "npm run lint && npm run wpt",
-    "bundle": "npm-run-all bundle:*",
-    "bundle:no-min": "rollup -c",
+    "bundle": "rollup -c",
+    "bundle:no-min": "rollup -c rollup.config.dev.js",
     "bundle:min": "rollup -c rollup.config.prod.js",
     "wpt": "node --expose_gc run-web-platform-tests-on-bundle.js",
     "sync-wpt": "git submodule update --init",
