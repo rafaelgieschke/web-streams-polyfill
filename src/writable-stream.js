@@ -1,14 +1,14 @@
-'use strict';
-const assert = require('better-assert');
+import assert from 'better-assert';
+import debug from 'debug';
 
 // Calls to verbose() are purely for debugging the reference implementation and tests. They are not part of the standard
 // and do not appear in the standard text.
-const verbose = require('debug')('streams:writable-stream:verbose');
+const verbose = debug('streams:writable-stream:verbose');
 
-const { CreateAlgorithmFromUnderlyingMethod, InvokeOrNoop, ValidateAndNormalizeHighWaterMark, IsNonNegativeNumber,
-        MakeSizeAlgorithmFromSizeFunction, typeIsObject } = require('./helpers.js');
-const { rethrowAssertionErrorRejection } = require('./utils.js');
-const { DequeueValue, EnqueueValueWithSize, PeekQueueValue, ResetQueue } = require('./queue-with-sizes.js');
+import { CreateAlgorithmFromUnderlyingMethod, InvokeOrNoop, ValidateAndNormalizeHighWaterMark, IsNonNegativeNumber,
+        MakeSizeAlgorithmFromSizeFunction, typeIsObject } from './helpers.js';
+import { rethrowAssertionErrorRejection } from './utils.js';
+import { DequeueValue, EnqueueValueWithSize, PeekQueueValue, ResetQueue } from './queue-with-sizes.js';
 
 const AbortSteps = Symbol('[[AbortSteps]]');
 const ErrorSteps = Symbol('[[ErrorSteps]]');
@@ -58,7 +58,7 @@ class WritableStream {
   }
 }
 
-module.exports = {
+export {
   AcquireWritableStreamDefaultWriter,
   CreateWritableStream,
   IsWritableStream,

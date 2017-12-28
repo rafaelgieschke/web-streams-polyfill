@@ -12,15 +12,12 @@ export default {
   },
   plugins: [
     nodeResolve({
+      include: 'node_modules/**',
       browser: true,
       preferBuiltins: false
     }),
     commonjs({
-      namedExports: {
-        'src/readable-stream.js': ['ReadableStream'],
-        'src/writable-stream.js': ['WritableStream'],
-        'src/transform-stream.js': ['TransformStream']
-      }
+      include: 'node_modules/**'
     })
   ]
 };
