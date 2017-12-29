@@ -10,7 +10,7 @@ import { CreateAlgorithmFromUnderlyingMethod, InvokeOrNoop, ValidateAndNormalize
 import { rethrowAssertionErrorRejection } from './utils.js';
 import { DequeueValue, EnqueueValueWithSize, PeekQueueValue, ResetQueue } from './queue-with-sizes.js';
 import { CreateWrappingWritableSink } from './extensions/wrappers';
-import { IsWritableStreamConstructor, NativeWritableStream } from './extensions/native';
+import { HasNativeWritableStreamConstructor, NativeWritableStream } from './extensions/native';
 
 const AbortSteps = Symbol('[[AbortSteps]]');
 const ErrorSteps = Symbol('[[ErrorSteps]]');
@@ -74,7 +74,7 @@ class WritableStream {
     if (writable.locked) {
       throw new TypeError('Cannot wrap a writable stream that already has a writer');
     }
-    if (!IsWritableStreamConstructor(NativeWritableStream)) {
+    if (!HasNativeWritableStreamConstructor) {
       throw new TypeError('Cannot construct a native writable stream');
     }
 

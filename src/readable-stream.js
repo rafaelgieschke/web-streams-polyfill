@@ -9,7 +9,7 @@ import { AcquireWritableStreamDefaultWriter, IsWritableStream, IsWritableStreamL
         WritableStreamDefaultWriterRelease, WritableStreamDefaultWriterWrite, WritableStreamCloseQueuedOrInFlight }
       from './writable-stream.js';
 import { CreateWrappingReadableSource } from './extensions/wrappers';
-import { IsReadableStreamConstructor, NativeReadableStream } from './extensions/native';
+import { HasNativeReadableStreamConstructor, NativeReadableStream } from './extensions/native';
 
 const CancelSteps = Symbol('[[CancelSteps]]');
 const PullSteps = Symbol('[[PullSteps]]');
@@ -282,7 +282,7 @@ class ReadableStream {
     if (readable.locked) {
       throw new TypeError('Cannot wrap a readable stream that already has a reader');
     }
-    if (!IsReadableStreamConstructor(NativeReadableStream)) {
+    if (!HasNativeReadableStreamConstructor) {
       throw new TypeError('Cannot construct a native readable stream');
     }
 

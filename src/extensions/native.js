@@ -22,3 +22,7 @@ export const NativeTransformStream = typeof TransformStream === 'function' ? Tra
 export const IsReadableStreamConstructor = IsStreamConstructor;
 export const IsWritableStreamConstructor = IsStreamConstructor;
 export const IsTransformStreamConstructor = IsStreamConstructor;
+
+export const HasNativeReadableStreamConstructor = IsReadableStreamConstructor(NativeReadableStream);
+export const HasNativeWritableStreamConstructor = IsWritableStreamConstructor(NativeWritableStream);
+export const HasNativeTransformStreamConstructor = IsTransformStreamConstructor(NativeTransformStream);
