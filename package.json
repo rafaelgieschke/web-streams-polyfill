@@ -6,6 +6,7 @@
   "browser": "dist/polyfill.min.js",
   "module": "dist/polyfill.es.js",
   "jsnext:main": "dist/polyfill.es.js",
+  "types": "types/polyfill.d.ts",
   "scripts": {
     "test": "npm run lint && npm run wpt",
     "bundle": "rollup -c",
@@ -20,7 +21,8 @@
     "prepublish": "npm run build"
   },
   "files": [
-    "dist"
+    "dist",
+    "types"
   ],
   "repository": {
     "type": "git",
