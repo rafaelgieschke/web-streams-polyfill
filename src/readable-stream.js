@@ -276,7 +276,7 @@ class ReadableStream {
 
   static toNative(readable, { size, highWaterMark } = {}) {
     if (!IsReadableStreamConstructor(NativeReadableStream)) {
-      throw new TypeError('Missing native support for readable streams');
+      throw new TypeError('Cannot construct a native readable stream');
     }
 
     const source = CreateWrappingReadableSource(readable);

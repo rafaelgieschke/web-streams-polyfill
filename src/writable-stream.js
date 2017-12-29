@@ -68,7 +68,7 @@ class WritableStream {
 
   static toNative(writable, { size, highWaterMark } = {}) {
     if (!IsWritableStreamConstructor(NativeWritableStream)) {
-      throw new TypeError('Missing native support for writable streams');
+      throw new TypeError('Cannot construct a native writable stream');
     }
 
     const sink = CreateWrappingWritableSink(writable);

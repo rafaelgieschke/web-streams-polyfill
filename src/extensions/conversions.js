@@ -4,7 +4,7 @@ export function CreateWrappingReadableSource(readable) {
   const { reader, mode } = GetBYOBOrDefaultReader(readable);
 
   let source;
-  if (mode === 'bytes') {
+  if (mode === 'byob') {
     source = new WrappingReadableByteStreamSource(reader);
   } else {
     source = new WrappingReadableStreamDefaultSource(reader);
