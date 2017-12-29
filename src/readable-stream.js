@@ -8,7 +8,7 @@ import { AcquireWritableStreamDefaultWriter, IsWritableStream, IsWritableStreamL
         WritableStreamAbort, WritableStreamDefaultWriterCloseWithErrorPropagation,
         WritableStreamDefaultWriterRelease, WritableStreamDefaultWriterWrite, WritableStreamCloseQueuedOrInFlight }
       from './writable-stream.js';
-import { CreateWrappingReadableSource } from './extensions/conversions';
+import { CreateWrappingReadableSource } from './extensions/wrappers';
 import { IsReadableStreamConstructor, NativeReadableStream } from './extensions/native';
 
 const CancelSteps = Symbol('[[CancelSteps]]');
@@ -271,7 +271,7 @@ class ReadableStream {
 
   static fromNative(readable, { size, highWaterMark } = {}) {
     if (readable.locked) {
-      throw new TypeError('Cannot convert from a readable stream that already has a reader');
+      throw new TypeError('Cannot wrap a readable stream that already has a reader');
     }
 
     const source = CreateWrappingReadableSource(readable);
@@ -280,7 +280,7 @@ class ReadableStream {
 
   static toNative(readable, { size, highWaterMark } = {}) {
     if (readable.locked) {
-      throw new TypeError('Cannot convert from a readable stream that already has a reader');
+      throw new TypeError('Cannot wrap a readable stream that already has a reader');
     }
     if (!IsReadableStreamConstructor(NativeReadableStream)) {
       throw new TypeError('Cannot construct a native readable stream');

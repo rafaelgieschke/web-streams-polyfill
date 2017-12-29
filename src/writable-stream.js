@@ -9,7 +9,7 @@ import { CreateAlgorithmFromUnderlyingMethod, InvokeOrNoop, ValidateAndNormalize
         MakeSizeAlgorithmFromSizeFunction, typeIsObject } from './helpers.js';
 import { rethrowAssertionErrorRejection } from './utils.js';
 import { DequeueValue, EnqueueValueWithSize, PeekQueueValue, ResetQueue } from './queue-with-sizes.js';
-import { CreateWrappingWritableSink } from './extensions/conversions';
+import { CreateWrappingWritableSink } from './extensions/wrappers';
 import { IsWritableStreamConstructor, NativeWritableStream } from './extensions/native';
 
 const AbortSteps = Symbol('[[AbortSteps]]');
@@ -63,7 +63,7 @@ class WritableStream {
 
   static fromNative(writable, { size, highWaterMark } = {}) {
     if (writable.locked) {
-      throw new TypeError('Cannot convert from a writable stream that already has a writer');
+      throw new TypeError('Cannot wrap a writable stream that already has a writer');
     }
 
     const sink = CreateWrappingWritableSink(writable);
@@ -72,7 +72,7 @@ class WritableStream {
 
   static toNative(writable, { size, highWaterMark } = {}) {
     if (writable.locked) {
-      throw new TypeError('Cannot convert from a writable stream that already has a writer');
+      throw new TypeError('Cannot wrap a writable stream that already has a writer');
     }
     if (!IsWritableStreamConstructor(NativeWritableStream)) {
       throw new TypeError('Cannot construct a native writable stream');
