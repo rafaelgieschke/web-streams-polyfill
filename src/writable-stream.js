@@ -61,16 +61,16 @@ class WritableStream {
 
   // Extensions
 
-  static fromNative(writable, { size, highWaterMark } = {}) {
+  static fromNative(writable, queuingStrategy = {}) {
     if (writable.locked) {
       throw new TypeError('Cannot wrap a writable stream that already has a writer');
     }
 
     const sink = CreateWrappingWritableSink(writable);
-    return new WritableStream(sink, { size, highWaterMark });
+    return new WritableStream(sink, queuingStrategy);
   }
 
-  static toNative(writable, { size, highWaterMark } = {}) {
+  static toNative(writable, queuingStrategy = {}) {
     if (writable.locked) {
       throw new TypeError('Cannot wrap a writable stream that already has a writer');
     }
@@ -79,7 +79,7 @@ class WritableStream {
     }
 
     const sink = CreateWrappingWritableSink(writable);
-    return new NativeWritableStream(sink, { size, highWaterMark });
+    return new NativeWritableStream(sink, queuingStrategy);
   }
 
 }

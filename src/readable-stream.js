@@ -269,16 +269,16 @@ class ReadableStream {
 
   // Extensions
 
-  static fromNative(readable, { size, highWaterMark } = {}) {
+  static fromNative(readable, queuingStrategy = {}) {
     if (readable.locked) {
       throw new TypeError('Cannot wrap a readable stream that already has a reader');
     }
 
     const source = CreateWrappingReadableSource(readable);
-    return new ReadableStream(source, { size, highWaterMark });
+    return new ReadableStream(source, queuingStrategy);
   }
 
-  static toNative(readable, { size, highWaterMark } = {}) {
+  static toNative(readable, queuingStrategy = {}) {
     if (readable.locked) {
       throw new TypeError('Cannot wrap a readable stream that already has a reader');
     }
@@ -287,7 +287,7 @@ class ReadableStream {
     }
 
     const source = CreateWrappingReadableSource(readable);
-    return new NativeReadableStream(source, { size, highWaterMark });
+    return new NativeReadableStream(source, queuingStrategy);
   }
 
 }
