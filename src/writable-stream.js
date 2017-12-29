@@ -62,11 +62,18 @@ class WritableStream {
   // Extensions
 
   static fromNative(writable, { size, highWaterMark } = {}) {
+    if (writable.locked) {
+      throw new TypeError('Cannot convert from a writable stream that already has a writer');
+    }
+
     const sink = CreateWrappingWritableSink(writable);
     return new WritableStream(sink, { size, highWaterMark });
   }
 
   static toNative(writable, { size, highWaterMark } = {}) {
+    if (writable.locked) {
+      throw new TypeError('Cannot convert from a writable stream that already has a writer');
+    }
     if (!IsWritableStreamConstructor(NativeWritableStream)) {
       throw new TypeError('Cannot construct a native writable stream');
     }

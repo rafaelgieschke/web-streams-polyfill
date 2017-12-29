@@ -270,11 +270,18 @@ class ReadableStream {
   // Extensions
 
   static fromNative(readable, { size, highWaterMark } = {}) {
+    if (readable.locked) {
+      throw new TypeError('Cannot convert from a readable stream that already has a reader');
+    }
+
     const source = CreateWrappingReadableSource(readable);
     return new ReadableStream(source, { size, highWaterMark });
   }
 
   static toNative(readable, { size, highWaterMark } = {}) {
+    if (readable.locked) {
+      throw new TypeError('Cannot convert from a readable stream that already has a reader');
+    }
     if (!IsReadableStreamConstructor(NativeReadableStream)) {
       throw new TypeError('Cannot construct a native readable stream');
     }
