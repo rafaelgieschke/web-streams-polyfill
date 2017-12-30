@@ -18,7 +18,7 @@ export function CreateWrappingWritableSink(writable) {
   return new WrappingWritableStreamSink(writer);
 }
 
-class WrappingReadableStreamDefaultSource {
+class AbstractWrappingReadableStreamSource {
 
   constructor(underlyingReader) {
     this._underlyingReader = underlyingReader;
@@ -28,6 +28,14 @@ class WrappingReadableStreamDefaultSource {
   start(controller) {
     this._readableStreamController = controller;
   }
+
+  cancel(reason) {
+    return this._underlyingReader.cancel(reason);
+  }
+
+}
+
+class WrappingReadableStreamDefaultSource extends AbstractWrappingReadableStreamSource {
 
   pull() {
     // TODO Backpressure?
@@ -42,13 +50,21 @@ class WrappingReadableStreamDefaultSource {
       });
   }
 
-  cancel(reason) {
-    return this._underlyingReader.cancel(reason);
-  }
-
 }
 
-class WrappingReadableByteStreamSource extends WrappingReadableStreamDefaultSource {
+function toUint8Array(view) {
+  return new Uint8Array(view.buffer, view.byteOffset, view.byteLength);
+}
+
+function copyArrayBufferView(from, to) {
+  const fromArray = toUint8Array(from);
+  const toArray = toUint8Array(to);
+  toArray.set(fromArray, 0);
+}
+
+const DEFAULT_CHUNK_SIZE = 1024;
+
+class WrappingReadableByteStreamSource extends AbstractWrappingReadableStreamSource {
 
   get type() {
     return 'bytes';
@@ -56,26 +72,41 @@ class WrappingReadableByteStreamSource extends WrappingReadableStreamDefaultSour
 
   pull() {
     const byobRequest = this._readableStreamController.byobRequest;
-    if (byobRequest) {
-      return this._pullIntoByobRequest(byobRequest);
+    if (byobRequest !== undefined) {
+      return this._pullWithByobRequest(byobRequest);
     }
-    return super.pull();
+    return this._pullWithEnqueue();
   }
 
-  _pullIntoByobRequest(byobRequest) {
+  _pullWithByobRequest(byobRequest) {
+    // reader.read(view) detaches the input view, therefore we cannot pass byobRequest.view directly
+    // create a separate buffer to read into, then copy that to byobRequest.view
+    const buffer = new Uint8Array(byobRequest.view.byteLength);
+
     // TODO Backpressure?
-    return this._underlyingReader.read(byobRequest.view)
+    return this._underlyingReader.read(buffer)
       .then(({ value, done }) => {
         const controller = this._readableStreamController;
-        const requestView = byobRequest.view;
         if (done) {
           controller.close();
-        } else if (value.buffer === requestView.buffer && value.byteOffset === requestView.byteOffset) {
-          // responded in same view
-          byobRequest.respond(requestView.byteLength);
         } else {
-          // responded in different view
-          byobRequest.respondWithNewView(value);
+          copyArrayBufferView(value, byobRequest.view);
+          byobRequest.respond(value.byteLength);
+        }
+      });
+  }
+
+  _pullWithEnqueue() {
+    const buffer = new Uint8Array(DEFAULT_CHUNK_SIZE);
+
+    // TODO Backpressure?
+    return this._underlyingReader.read(buffer)
+      .then(({ value, done }) => {
+        const controller = this._readableStreamController;
+        if (done) {
+          controller.close();
+        } else {
+          controller.enqueue(value);
         }
       });
   }
