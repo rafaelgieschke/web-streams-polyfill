@@ -1,10 +1,10 @@
 /* global window */
 
-import { ReadableStream } from './readable-stream';
-import { WritableStream } from './writable-stream';
-import ByteLengthQueuingStrategy from './byte-length-queuing-strategy';
-import CountQueuingStrategy from './count-queuing-strategy';
-import { TransformStream } from './transform-stream';
+import { ReadableStream } from './polyfill/readable-stream';
+import { WritableStream } from './polyfill/writable-stream';
+import ByteLengthQueuingStrategy from './polyfill/byte-length-queuing-strategy';
+import CountQueuingStrategy from './polyfill/count-queuing-strategy';
+import { TransformStream } from './polyfill/transform-stream';
 
 const interfaces = {
   ReadableStream,

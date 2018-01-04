@@ -9,8 +9,8 @@ import { CreateAlgorithmFromUnderlyingMethod, InvokeOrNoop, ValidateAndNormalize
         MakeSizeAlgorithmFromSizeFunction, typeIsObject } from './helpers.js';
 import { rethrowAssertionErrorRejection } from './utils.js';
 import { DequeueValue, EnqueueValueWithSize, PeekQueueValue, ResetQueue } from './queue-with-sizes.js';
-import { createWrappingWritableSink } from './extensions/wrappers';
-import { hasNativeWritableStreamConstructor, NativeWritableStream } from './extensions/native';
+import { createWrappingWritableSink } from '../extensions/wrappers';
+import { hasNativeWritableStreamConstructor, NativeWritableStream } from '../extensions/native';
 
 const AbortSteps = Symbol('[[AbortSteps]]');
 const ErrorSteps = Symbol('[[ErrorSteps]]');
