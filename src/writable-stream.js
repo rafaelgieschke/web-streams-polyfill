@@ -9,8 +9,8 @@ import { CreateAlgorithmFromUnderlyingMethod, InvokeOrNoop, ValidateAndNormalize
         MakeSizeAlgorithmFromSizeFunction, typeIsObject } from './helpers.js';
 import { rethrowAssertionErrorRejection } from './utils.js';
 import { DequeueValue, EnqueueValueWithSize, PeekQueueValue, ResetQueue } from './queue-with-sizes.js';
-import { CreateWrappingWritableSink } from './extensions/wrappers';
-import { HasNativeWritableStreamConstructor, NativeWritableStream } from './extensions/native';
+import { createWrappingWritableSink } from './extensions/wrappers';
+import { hasNativeWritableStreamConstructor, NativeWritableStream } from './extensions/native';
 
 const AbortSteps = Symbol('[[AbortSteps]]');
 const ErrorSteps = Symbol('[[ErrorSteps]]');
@@ -66,7 +66,7 @@ class WritableStream {
       throw new TypeError('Cannot wrap a writable stream that already has a writer');
     }
 
-    const sink = CreateWrappingWritableSink(writable);
+    const sink = createWrappingWritableSink(writable);
     return new WritableStream(sink, queuingStrategy);
   }
 
@@ -74,11 +74,11 @@ class WritableStream {
     if (writable.locked) {
       throw new TypeError('Cannot wrap a writable stream that already has a writer');
     }
-    if (!HasNativeWritableStreamConstructor) {
+    if (!hasNativeWritableStreamConstructor) {
       throw new TypeError('Cannot construct a native writable stream');
     }
 
-    const sink = CreateWrappingWritableSink(writable);
+    const sink = createWrappingWritableSink(writable);
     return new NativeWritableStream(sink, queuingStrategy);
   }
 

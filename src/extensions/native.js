@@ -1,4 +1,4 @@
-function IsStreamConstructor(ctor) {
+function isStreamConstructor(ctor) {
   if (typeof ctor !== 'function') {
     return false;
   }
@@ -19,8 +19,8 @@ export const NativeReadableStream = typeof ReadableStream === 'function' ? Reada
 export const NativeWritableStream = typeof WritableStream === 'function' ? WritableStream : undefined;
 export const NativeTransformStream = typeof TransformStream === 'function' ? TransformStream : undefined;
 
-export function IsReadableStreamConstructor(ctor) {
-  if (!IsStreamConstructor(ctor)) {
+export function isReadableStreamConstructor(ctor) {
+  if (!isStreamConstructor(ctor)) {
     return false;
   }
   try {
@@ -31,8 +31,8 @@ export function IsReadableStreamConstructor(ctor) {
   return true;
 }
 
-export function IsWritableStreamConstructor(ctor) {
-  if (!IsStreamConstructor(ctor)) {
+export function isWritableStreamConstructor(ctor) {
+  if (!isStreamConstructor(ctor)) {
     return false;
   }
   try {
@@ -43,8 +43,8 @@ export function IsWritableStreamConstructor(ctor) {
   return true;
 }
 
-export function IsTransformStreamConstructor(ctor) {
-  if (!IsStreamConstructor(ctor)) {
+export function isTransformStreamConstructor(ctor) {
+  if (!isStreamConstructor(ctor)) {
     return false;
   }
   try {
@@ -55,6 +55,6 @@ export function IsTransformStreamConstructor(ctor) {
   return true;
 }
 
-export const HasNativeReadableStreamConstructor = IsReadableStreamConstructor(NativeReadableStream);
-export const HasNativeWritableStreamConstructor = IsWritableStreamConstructor(NativeWritableStream);
-export const HasNativeTransformStreamConstructor = IsTransformStreamConstructor(NativeTransformStream);
+export const hasNativeReadableStreamConstructor = isReadableStreamConstructor(NativeReadableStream);
+export const hasNativeWritableStreamConstructor = isWritableStreamConstructor(NativeWritableStream);
+export const hasNativeTransformStreamConstructor = isTransformStreamConstructor(NativeTransformStream);

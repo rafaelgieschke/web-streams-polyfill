@@ -1,7 +1,7 @@
-import { GetBYOBOrDefaultReader } from './utils';
+import {getBYOBOrDefaultReader} from './utils';
 
-export function CreateWrappingReadableSource(readable) {
-  const { reader, mode } = GetBYOBOrDefaultReader(readable);
+export function createWrappingReadableSource(readable) {
+  const { reader, mode } = getBYOBOrDefaultReader(readable);
 
   let source;
   if (mode === 'byob') {
@@ -13,7 +13,7 @@ export function CreateWrappingReadableSource(readable) {
   return source;
 }
 
-export function CreateWrappingWritableSink(writable) {
+export function createWrappingWritableSink(writable) {
   const writer = writable.getWriter();
   return new WrappingWritableStreamSink(writer);
 }
