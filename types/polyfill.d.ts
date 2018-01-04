@@ -17,7 +17,7 @@ export declare class ReadableStream implements IReadableStream {
 
   cancel(reason: any): Promise<void>;
 
-  getReader(options): ReadableStreamBYOBReader;
+  getReader(options: { mode: 'byob' }): ReadableStreamBYOBReader;
   getReader(options?: { mode?: string }): ReadableStreamDefaultReader;
 
   pipeThrough(pair: ReadableWritableStreamPair, options?: ReadableStreamPipeOptions): ReadableStream;
