@@ -1,3 +1,1 @@
-import ByteLengthQueuingStrategy from './polyfill/byte-length-queuing-strategy';
-
-export default ByteLengthQueuingStrategy;
+export { default } from './polyfill/byte-length-queuing-strategy';
