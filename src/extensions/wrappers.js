@@ -1,4 +1,4 @@
-import {getBYOBOrDefaultReader} from './utils';
+import { getBYOBOrDefaultReader } from './utils';
 
 export function createWrappingReadableSource(readable) {
   const { reader, mode } = getBYOBOrDefaultReader(readable);

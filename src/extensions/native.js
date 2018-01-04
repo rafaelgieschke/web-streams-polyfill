@@ -1,4 +1,4 @@
-import {isReadableStreamConstructor, isTransformStreamConstructor, isWritableStreamConstructor} from "./checks";
+import { isReadableStreamConstructor, isTransformStreamConstructor, isWritableStreamConstructor } from './checks';
 
 export const NativeReadableStream = typeof ReadableStream === 'function' ? ReadableStream : undefined;
 export const NativeWritableStream = typeof WritableStream === 'function' ? WritableStream : undefined;
