@@ -1,3 +1,5 @@
+import {typeIsObject} from "../helpers";
+
 function isStreamConstructor(ctor) {
     if (typeof ctor !== 'function') {
         return false;
@@ -15,13 +17,31 @@ function isStreamConstructor(ctor) {
     return startCalled;
 }
 
+export function isReadableStream(readable) {
+    if (!typeIsObject(readable)) {
+        return false;
+    }
+    if (typeof readable.getReader !== 'function') {
+        return false;
+    }
+    return true;
+}
+
 export function isReadableStreamConstructor(ctor) {
     if (!isStreamConstructor(ctor)) {
         return false;
     }
-    try {
-        new ctor().getReader();
-    } catch (e) {
+    if (!isReadableStream(new ctor())) {
+        return false;
+    }
+    return true;
+}
+
+export function isWritableStream(writable) {
+    if (!typeIsObject(writable)) {
+        return false;
+    }
+    if (typeof writable.getWriter !== 'function') {
         return false;
     }
     return true;
@@ -31,9 +51,20 @@ export function isWritableStreamConstructor(ctor) {
     if (!isStreamConstructor(ctor)) {
         return false;
     }
-    try {
-        new ctor().getWriter();
-    } catch (e) {
+    if (!isWritableStream(new ctor())) {
+        return false;
+    }
+    return true;
+}
+
+export function isTransformStream(transform) {
+    if (!typeIsObject(transform)) {
+        return false;
+    }
+    if (!isReadableStream(transform.readable)) {
+        return false;
+    }
+    if (!isWritableStream(transform.writable)) {
         return false;
     }
     return true;
@@ -43,9 +74,7 @@ export function isTransformStreamConstructor(ctor) {
     if (!isStreamConstructor(ctor)) {
         return false;
     }
-    try {
-        new ctor().readable.getReader();
-    } catch (e) {
+    if (!isTransformStream(new ctor())) {
         return false;
     }
     return true;
