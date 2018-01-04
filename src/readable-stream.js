@@ -1,8 +1,12 @@
 import { ReadableStream as ReadableStreamPolyfill } from './polyfill/readable-stream';
+import { createWrappingReadableSource } from './extensions/wrappers';
 
 class ReadableStream extends ReadableStreamPolyfill {
 
   constructor(underlyingSource = {}, { size, highWaterMark } = {}) {
+    const wrappedReadableStream = new ReadableStreamPolyfill(underlyingSource, { size, highWaterMark });
+    underlyingSource = createWrappingReadableSource(wrappedReadableStream);
+
     super(underlyingSource, { size, highWaterMark });
   }
 
