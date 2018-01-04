@@ -12,6 +12,7 @@
     "bundle": "rollup -c",
     "bundle:no-min": "rollup -c rollup.config.dev.js",
     "bundle:min": "rollup -c rollup.config.prod.js",
+    "bundle:wpt": "rollup -c rollup.config.wpt.js",
     "wpt": "node --expose_gc run-web-platform-tests-on-bundle.js",
     "sync-wpt": "git submodule update --init",
     "lint": "eslint \"src/**/*.js\"",
