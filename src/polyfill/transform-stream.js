@@ -15,7 +15,7 @@ import { CreateWritableStream, WritableStreamDefaultControllerErrorIfNeeded } fr
 
 // Class TransformStream
 
-const TransformStream = class TransformStream {
+class TransformStream {
   constructor(transformer = {}, writableStrategy = {}, readableStrategy = {}) {
     const readableType = transformer.readableType;
 
