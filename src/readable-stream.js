@@ -28,6 +28,8 @@ class ReadableStream extends ReadableStreamPolyfill {
 
 }
 
+Object.defineProperty(ReadableStream, 'name', { value: 'ReadableStream' });
+
 export {
   ReadableStream
 };

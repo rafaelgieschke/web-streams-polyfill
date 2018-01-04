@@ -16,6 +16,8 @@ class TransformStream extends TransformStreamPolyfill {
 
 }
 
+Object.defineProperty(TransformStream, 'name', { value: 'TransformStream' });
+
 export {
   TransformStream
 };

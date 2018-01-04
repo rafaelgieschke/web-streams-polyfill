@@ -20,6 +20,8 @@ class WritableStream extends WritableStreamPolyfill {
 
 }
 
+Object.defineProperty(WritableStream, 'name', { value: 'WritableStream' });
+
 export {
   WritableStream
 };
