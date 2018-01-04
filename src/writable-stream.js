@@ -15,7 +15,7 @@ import { hasNativeWritableStreamConstructor, NativeWritableStream } from './exte
 const AbortSteps = Symbol('[[AbortSteps]]');
 const ErrorSteps = Symbol('[[ErrorSteps]]');
 
-class WritableStream {
+const WritableStream = class WritableStream {
   constructor(underlyingSink = {}, { size, highWaterMark = 1 } = {}) {
     InitializeWritableStream(this);
 

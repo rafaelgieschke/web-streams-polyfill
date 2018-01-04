@@ -14,7 +14,7 @@ import { hasNativeReadableStreamConstructor, NativeReadableStream } from './exte
 const CancelSteps = Symbol('[[CancelSteps]]');
 const PullSteps = Symbol('[[PullSteps]]');
 
-class ReadableStream {
+const ReadableStream = class ReadableStream {
   constructor(underlyingSource = {}, { size, highWaterMark } = {}) {
     InitializeReadableStream(this);
     const type = underlyingSource.type;
