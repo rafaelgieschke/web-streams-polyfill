@@ -27,6 +27,17 @@ class AbstractWrappingReadableStreamSource {
 
   start(controller) {
     this._readableStreamController = controller;
+
+    this._underlyingReader.closed
+      .then(() => {
+          this._readableStreamController.close();
+        },
+        reason => {
+          this._readableStreamController.error(reason);
+        })
+      .catch(ignore => {
+        // already closed or errored
+      });
   }
 
   cancel(reason) {
@@ -122,6 +133,14 @@ class WrappingWritableStreamSink {
 
   start(controller) {
     this._writableStreamController = controller;
+
+    this._underlyingWriter.closed
+      .catch(reason => {
+        this._writableStreamController.error(reason);
+      })
+      .catch(ignore => {
+        // already closed or errored
+      });
   }
 
   write(chunk) {
