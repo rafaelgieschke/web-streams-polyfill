@@ -29,6 +29,10 @@ class AbstractWrappingReadableStreamSource {
     this._readableStreamController = controller;
   }
 
+  cancel(reason) {
+    return this._underlyingReader.cancel(reason);
+  }
+
   _attachDefaultReader() {
     if (this._readerMode === 'default') {
       return;
@@ -69,10 +73,6 @@ class AbstractWrappingReadableStreamSource {
     this._underlyingReader.releaseLock();
     this._underlyingReader = undefined;
     this._readerMode = undefined;
-  }
-
-  cancel(reason) {
-    return this._underlyingReader.cancel(reason);
   }
 
   _pullWithDefaultReader() {
