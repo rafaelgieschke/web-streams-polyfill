@@ -1,5 +1,5 @@
 import { ReadableStream as ReadableStreamPolyfill } from './polyfill/readable-stream';
-import { createWrappingReadableSource } from './extensions/wrappers';
+import { createWrappingReadableSource } from './extensions/readable-wrapper';
 
 class ReadableStream extends ReadableStreamPolyfill {
 

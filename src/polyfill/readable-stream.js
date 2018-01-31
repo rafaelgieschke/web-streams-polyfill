@@ -8,7 +8,7 @@ import { AcquireWritableStreamDefaultWriter, IsWritableStream, IsWritableStreamL
         WritableStreamAbort, WritableStreamDefaultWriterCloseWithErrorPropagation,
         WritableStreamDefaultWriterRelease, WritableStreamDefaultWriterWrite, WritableStreamCloseQueuedOrInFlight }
       from './writable-stream.js';
-import { createWrappingReadableSource } from '../extensions/wrappers';
+import { createWrappingReadableSource } from '../extensions/readable-wrapper';
 import { hasNativeReadableStreamConstructor, NativeReadableStream } from '../extensions/native';
 
 const CancelSteps = Symbol('[[CancelSteps]]');
