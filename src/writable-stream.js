@@ -1,5 +1,5 @@
 import { WritableStream as WritableStreamPolyfill } from './polyfill/writable-stream';
-import { createWrappingWritableSink } from './extensions/wrappers';
+import { createWrappingWritableSink } from './extensions/writable-wrapper';
 
 class WritableStream extends WritableStreamPolyfill {
 
