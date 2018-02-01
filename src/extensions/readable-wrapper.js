@@ -23,6 +23,7 @@ class AbstractWrappingReadableStreamSource {
     this._underlyingReader = undefined;
     this._readerMode = undefined;
     this._readableStreamController = undefined;
+    this._pendingRead = undefined;
   }
 
   start(controller) {
@@ -54,6 +55,7 @@ class AbstractWrappingReadableStreamSource {
 
     this._underlyingReader = reader;
     this._underlyingReader.closed
+      .then(() => this._finishPendingRead())
       .then(() => {
           if (reader === this._underlyingReader) {
             return this._readableStreamController.close();
@@ -83,7 +85,7 @@ class AbstractWrappingReadableStreamSource {
     this._attachDefaultReader();
 
     // TODO Backpressure?
-    return this._underlyingReader.read()
+    const read = this._underlyingReader.read()
       .then(({ value, done }) => {
         const controller = this._readableStreamController;
         if (done) {
@@ -92,6 +94,27 @@ class AbstractWrappingReadableStreamSource {
           return controller.enqueue(value);
         }
       });
+
+    this._setPendingRead(read);
+    return read;
+  }
+
+  _setPendingRead(readPromise) {
+    let pendingRead;
+    const finishRead = () => {
+      if (this._pendingRead === pendingRead) {
+        this._pendingRead = undefined;
+      }
+    };
+    this._pendingRead = pendingRead = readPromise.then(finishRead, finishRead);
+  }
+
+  _finishPendingRead() {
+    if (!this._pendingRead) {
+      return;
+    }
+    const afterRead = () => this._finishPendingRead();
+    return this._pendingRead.then(afterRead, afterRead);
   }
 
 }
@@ -153,7 +176,7 @@ class WrappingReadableByteStreamSource extends AbstractWrappingReadableStreamSou
     const buffer = new Uint8Array(byobRequest.view.byteLength);
 
     // TODO Backpressure?
-    return this._underlyingReader.read(buffer)
+    const read = this._underlyingReader.read(buffer)
       .then(({ value, done }) => {
         const controller = this._readableStreamController;
         if (done) {
@@ -163,6 +186,9 @@ class WrappingReadableByteStreamSource extends AbstractWrappingReadableStreamSou
           return byobRequest.respond(value.byteLength);
         }
       });
+
+    this._setPendingRead(read);
+    return read;
   }
 
 }
