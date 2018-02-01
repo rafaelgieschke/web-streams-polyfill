@@ -140,8 +140,9 @@ class WrappingReadableByteStreamSource extends AbstractWrappingReadableStreamSou
     const byobRequest = this._readableStreamController.byobRequest;
     if (byobRequest !== undefined) {
       return this._pullWithByobRequest(byobRequest);
+    } else {
+      return this._pullWithDefaultReader();
     }
-    return this._pullWithDefaultReader();
   }
 
   _pullWithByobRequest(byobRequest) {
