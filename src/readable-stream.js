@@ -7,7 +7,7 @@ class ReadableStream extends ReadableStreamPolyfill {
     const wrappedReadableStream = new ReadableStreamPolyfill(underlyingSource, { size, highWaterMark });
     underlyingSource = createWrappingReadableSource(wrappedReadableStream);
 
-    super(underlyingSource, { size, highWaterMark });
+    super(underlyingSource, { size, highWaterMark: 0 });
   }
 
   get locked() {
