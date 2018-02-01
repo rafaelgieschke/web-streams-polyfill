@@ -30,7 +30,11 @@ class AbstractWrappingReadableStreamSource {
   }
 
   cancel(reason) {
-    return this._underlyingReader.cancel(reason);
+    if (this._underlyingReader !== undefined) {
+      return this._underlyingReader.cancel(reason);
+    } else {
+      return this._underlyingStream.cancel(reason);
+    }
   }
 
   _attachDefaultReader() {
