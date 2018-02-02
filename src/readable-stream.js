@@ -3,11 +3,14 @@ import { createWrappingReadableSource } from './extensions/readable-wrapper';
 
 class ReadableStream extends ReadableStreamPolyfill {
 
-  constructor(underlyingSource = {}, { size, highWaterMark } = {}) {
+  constructor(underlyingSource = {}, { size, highWaterMark } = {}, wrapped = false) {
+    if (!wrapped) {
     const wrappedReadableStream = new ReadableStreamPolyfill(underlyingSource, { size, highWaterMark });
     underlyingSource = createWrappingReadableSource(wrappedReadableStream);
+    highWaterMark = 0;
+    }
 
-    super(underlyingSource, { size, highWaterMark: 0 });
+    super(underlyingSource, { size, highWaterMark });
   }
 
   get locked() {
@@ -31,7 +34,11 @@ class ReadableStream extends ReadableStreamPolyfill {
   }
 
   tee() {
-    return super.tee();
+    const [branch1, branch2] = super.tee();
+
+    const wrapped1 = new ReadableStream(createWrappingReadableSource(branch1), {}, true);
+    const wrapped2 = new ReadableStream(createWrappingReadableSource(branch2), {}, true);
+    return [wrapped1, wrapped2];
   }
 
 }
