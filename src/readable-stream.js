@@ -30,6 +30,10 @@ class ReadableStream extends ReadableStreamPolyfill {
     return super.pipeTo(dest, options);
   }
 
+  tee() {
+    return super.tee();
+  }
+
 }
 
 Object.defineProperty(ReadableStream, 'name', { value: 'ReadableStream' });
