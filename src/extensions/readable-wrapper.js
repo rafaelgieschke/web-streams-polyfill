@@ -24,6 +24,9 @@ class AbstractWrappingReadableStreamSource {
     this._readerMode = undefined;
     this._readableStreamController = undefined;
     this._pendingRead = undefined;
+
+    // always keep a reader attached to detect close/error
+    this._attachDefaultReader();
   }
 
   start(controller) {
