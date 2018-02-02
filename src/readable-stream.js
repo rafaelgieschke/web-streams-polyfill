@@ -18,7 +18,7 @@ class ReadableStream extends ReadableStreamPolyfill {
     return super.cancel(reason);
   }
 
-  getReader(options) {
+  getReader(options = {}) {
     return super.getReader(options);
   }
 
@@ -26,7 +26,7 @@ class ReadableStream extends ReadableStreamPolyfill {
     return super.pipeThrough(pair, options);
   }
 
-  pipeTo(dest, options) {
+  pipeTo(dest, options = {}) {
     return super.pipeTo(dest, options);
   }
 
