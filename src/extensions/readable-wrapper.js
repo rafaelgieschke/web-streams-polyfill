@@ -61,12 +61,12 @@ class AbstractWrappingReadableStreamSource {
       .then(() => this._finishPendingRead())
       .then(() => {
           if (reader === this._underlyingReader) {
-            return this._readableStreamController.close();
+            this._readableStreamController.close();
           }
         },
         reason => {
           if (reader === this._underlyingReader) {
-            return this._readableStreamController.error(reason);
+            this._readableStreamController.error(reason);
           }
         })
       .catch(ignore => {
@@ -92,9 +92,9 @@ class AbstractWrappingReadableStreamSource {
       .then(({ value, done }) => {
         const controller = this._readableStreamController;
         if (done) {
-          return controller.close();
+          controller.close();
         } else {
-          return controller.enqueue(value);
+          controller.enqueue(value);
         }
       });
 
@@ -183,10 +183,10 @@ class WrappingReadableByteStreamSource extends AbstractWrappingReadableStreamSou
       .then(({ value, done }) => {
         const controller = this._readableStreamController;
         if (done) {
-          return controller.close();
+          controller.close();
         } else {
           copyArrayBufferView(value, byobRequest.view);
-          return byobRequest.respond(value.byteLength);
+          byobRequest.respond(value.byteLength);
         }
       });
 
