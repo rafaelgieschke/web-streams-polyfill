@@ -184,6 +184,7 @@ class WrappingReadableByteStreamSource extends AbstractWrappingReadableStreamSou
         const controller = this._readableStreamController;
         if (done) {
           controller.close();
+          byobRequest.respond(0);
         } else {
           copyArrayBufferView(value, byobRequest.view);
           byobRequest.respond(value.byteLength);
