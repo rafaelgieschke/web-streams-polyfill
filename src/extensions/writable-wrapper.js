@@ -10,6 +10,7 @@ class WrappingWritableStreamSink {
     this._writableStreamController = undefined;
     this._pendingWrite = undefined;
     this._state = 'writable';
+    this._storedError = undefined;
     this._errorPromise = new Promise((resolve, reject) => {
       this._errorPromiseReject = reject;
     });
@@ -30,7 +31,7 @@ class WrappingWritableStreamSink {
 
     // Detect errors
     writeRequest.catch(reason => this._finishErroring(reason));
-    writer.ready.catch(reason => this._finishErroring(reason));
+    writer.ready.catch(reason => this._startErroring(reason));
 
     // Reject write when errored
     const write = Promise.race([writeRequest, this._errorPromise]);
@@ -40,7 +41,10 @@ class WrappingWritableStreamSink {
   }
 
   close() {
-    return this._underlyingWriter.close();
+    if (this._pendingWrite === undefined) {
+      return this._underlyingWriter.close();
+    }
+    return this._finishPendingWrite().then(() => this.close());
   }
 
   abort(reason) {
@@ -70,13 +74,30 @@ class WrappingWritableStreamSink {
     return this._pendingWrite.then(afterWrite, afterWrite);
   }
 
-  _finishErroring(reason) {
-    if (this._state !== 'writable') {
-      return;
+  _startErroring(reason) {
+    if (this._state === 'writable') {
+      this._state = 'erroring';
+      this._storedError = reason;
+
+      const afterWrite = () => this._finishErroring(reason);
+      if (this._pendingWrite === undefined) {
+        afterWrite();
+      } else {
+        this._finishPendingWrite().then(afterWrite, afterWrite);
+      }
+
+      this._writableStreamController.error(reason);
     }
-    this._state = 'errored';
-    this._errorPromiseReject(reason);
-    this._writableStreamController.error(reason);
+  }
+
+  _finishErroring(reason) {
+    if (this._state === 'writable') {
+      this._startErroring(reason);
+    }
+    if (this._state === 'erroring') {
+      this._state = 'errored';
+      this._errorPromiseReject(this._storedError);
+    }
   }
 
 }
