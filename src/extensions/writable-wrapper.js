@@ -24,6 +24,18 @@ class WrappingWritableStreamSink {
 
   write(chunk) {
     const writer = this._underlyingWriter;
+    const desiredSize = writer.desiredSize;
+
+    // Apply backpressure
+    if (desiredSize <= 0) {
+      return writer.ready.then(() => this._writeChunk(chunk));
+    }
+
+    return this._writeChunk(chunk);
+  }
+
+  _writeChunk(chunk) {
+    const writer = this._underlyingWriter;
 
     writer.write(chunk)
       .catch(reason => {
@@ -31,10 +43,6 @@ class WrappingWritableStreamSink {
         controller.error(reason);
       });
 
-    // Apply backpressure
-    if (writer.desiredSize <= 0) {
-      return writer.ready;
-    }
     return undefined;
   }
 

@@ -4,7 +4,7 @@ import { createWrappingWritableSink } from './extensions/writable-wrapper';
 class WritableStream extends WritableStreamPolyfill {
 
   constructor(underlyingSink = {}, { size, highWaterMark } = {}) {
-    const wrappedWritableStream = new WritableStreamPolyfill(underlyingSink, { highWaterMark: 0 });
+    const wrappedWritableStream = new WritableStreamPolyfill(underlyingSink, { highWaterMark: 1 });
     underlyingSink = createWrappingWritableSink(wrappedWritableStream);
 
     super(underlyingSink, { size, highWaterMark });
