@@ -68,9 +68,7 @@ class AbstractWrappingReadableStreamSource {
           this._readableStreamController.error(reason);
         }
       })
-      .catch(ignore => {
-        // already closed or errored
-      });
+      .catch(() => {});
   }
 
   _detachReader() {
@@ -113,7 +111,7 @@ class AbstractWrappingReadableStreamSource {
 
   _finishPendingRead() {
     if (!this._pendingRead) {
-      return;
+      return undefined;
     }
     const afterRead = () => this._finishPendingRead();
     return this._pendingRead.then(afterRead, afterRead);

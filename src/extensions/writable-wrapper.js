@@ -75,7 +75,6 @@ class WrappingWritableStreamSink {
       return;
     }
     this._state = 'errored';
-    this._storedError = reason;
     this._errorPromiseReject(reason);
     this._writableStreamController.error(reason);
   }
