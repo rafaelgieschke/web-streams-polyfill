@@ -60,15 +60,14 @@ class AbstractWrappingReadableStreamSource {
     this._underlyingReader.closed
       .then(() => this._finishPendingRead())
       .then(() => {
-          if (reader === this._underlyingReader) {
-            this._readableStreamController.close();
-          }
-        },
-        reason => {
-          if (reader === this._underlyingReader) {
-            this._readableStreamController.error(reason);
-          }
-        })
+        if (reader === this._underlyingReader) {
+          this._readableStreamController.close();
+        }
+      }, reason => {
+        if (reader === this._underlyingReader) {
+          this._readableStreamController.error(reason);
+        }
+      })
       .catch(ignore => {
         // already closed or errored
       });
