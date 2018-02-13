@@ -29,9 +29,15 @@ class WrappingWritableStreamSink {
 
   write(chunk) {
     const writer = this._underlyingWriter;
+
+    // Detect past errors
+    if (writer.desiredSize === null) {
+      return writer.ready;
+    }
+
     const writeRequest = writer.write(chunk);
 
-    // Detect errors
+    // Detect future errors
     writeRequest.catch(reason => this._finishErroring(reason));
     writer.ready.catch(reason => this._startErroring(reason));
 
