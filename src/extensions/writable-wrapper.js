@@ -21,7 +21,9 @@ class WrappingWritableStreamSink {
     this._writableStreamController = controller;
 
     this._underlyingWriter.closed
-      .then(() => this._finishPendingWrite())
+      .then(() => {
+        this._state = 'closed';
+      })
       .catch(reason => this._finishErroring(reason));
   }
 
@@ -68,7 +70,7 @@ class WrappingWritableStreamSink {
 
   _finishPendingWrite() {
     if (this._pendingWrite === undefined) {
-      return undefined;
+      return Promise.resolve();
     }
     const afterWrite = () => this._finishPendingWrite();
     return this._pendingWrite.then(afterWrite, afterWrite);
