@@ -5,6 +5,7 @@ const rollupAlias = require('rollup-plugin-alias');
 const rollupBabel = require('rollup-plugin-babel');
 const rollupStrip = require('rollup-plugin-strip');
 const rollupUglify = require('rollup-plugin-uglify');
+const optimizeHelperExports = require('./build/optimize-helper-exports');
 
 function buildConfig(entry, { esm = false, cjs = false, minify = false, wpt = false } = {}) {
   const suffix = `${wpt ? '.wpt' : ''}${minify ? '.min' : ''}`;
@@ -26,6 +27,10 @@ function buildConfig(entry, { esm = false, cjs = false, minify = false, wpt = fa
       } : undefined
     ].filter(Boolean),
     plugins: [
+      optimizeHelperExports({
+        include: 'spec/reference-implementation/lib/helpers.js',
+        sourceMap: true
+      }),
       rollupCommonJS({
         include: 'spec/reference-implementation/lib/*.js',
         sourceMap: true
